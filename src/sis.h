@@ -80,6 +80,7 @@
 #include "sis_pci.h"
 #include "xf86Cursor.h"
 #include "xf86cmap.h"
+#include "xf86fbman.h"
 #include "vbe.h"
 
 /*I.L. modified*/
@@ -1297,12 +1298,12 @@ typedef struct {
 #ifdef SIS_USE_XAA
     void		(*RenderCallback)(ScrnInfoPtr);
     Time		RenderTime;
-    FBLinearPtr		AccelLinearScratch;
 #endif
 #ifdef SIS_USE_EXA
     void		(*ExaRenderCallback)(ScrnInfoPtr);
     Time		ExaRenderTime;
 #endif
+    FBLinearPtr		AccelLinearScratch;
     UChar		*RenderAccelArray;
     Bool		doRender;
 

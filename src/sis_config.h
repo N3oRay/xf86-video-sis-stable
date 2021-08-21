@@ -68,6 +68,8 @@
 
 #ifdef HAVE_XAA_H
 #define SIS_USE_XAA		/* Include support for XAA */
+#define RENDER
+#define SISDRI
 #endif
 
 #ifdef SISVRAMQ
