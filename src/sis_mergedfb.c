@@ -1522,27 +1522,28 @@ SISMFBPointerMoved(SCRN_ARG_TYPE arg, int x, int y)
 	     }
 	  }
        }
-       if(doit) {
-	  sigstate = xf86BlockSIGIO();
+     if(doit) {
+#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) < 20 /* screw it */
+	sigstate = xf86BlockSIGIO();
 #if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 15
-           {
-		double dx = x, dy = y;
-                int nevent = 0;
-		miPointerSetPosition(inputInfo.pointer, Absolute, &dx, &dy, &nevent, NULL);
-		x = (int)dx;
-		y = (int)dy;
-	   }
+        {
+            double dx = x, dy = y;
+            miPointerSetPosition(inputInfo.pointer, Absolute, &dx, &dy);
+            x = (int)dx;
+            y = (int)dy;
+        }
 #elif GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 13
-	  miPointerSetPosition(inputInfo.pointer, Absolute, x, y);
+	miPointerSetPosition(inputInfo.pointer, Absolute, &x, &y);
 #elif GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 5
-	  miPointerSetPosition(inputInfo.pointer, x, y);
+	miPointerSetPosition(inputInfo.pointer, &x, &y);
 #else
-	  UpdateCurrentTime();
-	  miPointerAbsoluteCursor(x, y, currentTime.milliseconds);
+	UpdateCurrentTime();
+	miPointerAbsoluteCursor(x, y, currentTime.milliseconds);
 #endif
-	  xf86UnblockSIGIO(sigstate);
-	  return;
-       }
+	xf86UnblockSIGIO(sigstate);
+#endif
+	return;
+     }
     }
 #endif
 
