@@ -50,7 +50,7 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <X11/extensions/Xvlib.h>
 #include <X11/extensions/XvMC.h>
 #include <X11/extensions/XvMClib.h>
-#include <asm/io.h>
+#include <sys/io.h>
 #include "SiSXvMC.h"
 
 
@@ -81,29 +81,11 @@ FILE* dump;
 
 void sis_free_privContext(SiSXvMCContext *pSiSXvMC) {
 
-   int errorno;
-
-   SIS_LOCK(pSiSXvMC, DRM_LOCK_QUIESCENT);  
+   SIS_LOCK(pSiSXvMC,DRM_LOCK_QUIESCENT);  
    if(!pSiSXvMC->ref--){
-      errorno = drmUnmap(pSiSXvMC->mmio_map.address, pSiSXvMC->mmio_map.size);
-      if(errorno != 0)	printf("[XvMC] Ummap mmio failed! (ErrorNo: %d)\n", errorno);
-#ifdef XVMCDEBUG
-      else		printf("[XvMC] Ummap mmio Successfully!\n");
-#endif
-
-      errorno = drmUnmap(pSiSXvMC->agp_map.address, pSiSXvMC->agp_map.size);
-      if(errorno != 0)	printf("[XvMC] Ummap agp failed! (ErrorNo: %d)\n", errorno);
-#ifdef XVMCDEBUG
-      else		printf("[XvMC] Ummap agp Successfully!\n");
-#endif
-
-      errorno = drmUnmap(pSiSXvMC->fb_map.address, pSiSXvMC->fb_map.size);
-      if(errorno != 0)	printf("[XvMC] Ummap frame buffer failed! (ErrorNo: %d)\n", errorno);
-#ifdef XVMCDEBUG
-      else		printf("[XvMC] Ummap frame buffer Successfully!\n");
-#endif
-
-
+      drmUnmap(pSiSXvMC->mmio_map.address, pSiSXvMC->mmio_map.size);
+      drmUnmap(pSiSXvMC->agp_map.address, pSiSXvMC->agp_map.size);
+      drmUnmap(pSiSXvMC->fb_map.address, pSiSXvMC->fb_map.size);
       drmClose(pSiSXvMC->fd);
       free(pSiSXvMC);
    }
@@ -541,7 +523,7 @@ Status XvMCCreateContext(Display *display, XvPortID port,
   */
   if(priv_count != sizeof(SiSXvMCCreateContextRec)) {
     printf("[XvMC] _xvmc_create_context() returned incorrect data size!\n");
-    printf("\tExpected %d, got %d\n", sizeof(SiSXvMCCreateContextRec), priv_count);
+    printf("\tExpected %lu, got %d\n", sizeof(SiSXvMCCreateContextRec), priv_count);
     _xvmc_destroy_context(display, context);
     free(pSiSXvMC);
     return BadAlloc;
@@ -564,9 +546,9 @@ Status XvMCCreateContext(Display *display, XvPortID port,
 #ifdef XVMCDEBUG
   printf("%s:\n",__FUNCTION__);
   printf("drmcontext = 0x%x,\n",pSiSXvMC->drmcontext);
-  printf("agp offset = 0x%x, agp size = 0x%x,\n",pSiSXvMC->agp_map.offset, pSiSXvMC->agp_map.size);
-  printf("mmio offset = 0x%x, mmio size = 0x%x,\n",pSiSXvMC->mmio_map.offset, pSiSXvMC->mmio_map.size);
-  printf("fb offset = 0x%x, fb size = 0x%x,\n",pSiSXvMC->fb_map.offset, pSiSXvMC->fb_map.size);
+  printf("agp offset = 0x%x, agp size = 0x%lx,\n",pSiSXvMC->agp_map.offset, pSiSXvMC->agp_map.size);
+  printf("mmio offset = 0x%x, mmio size = 0x%lx,\n",pSiSXvMC->mmio_map.offset, pSiSXvMC->mmio_map.size);
+  printf("fb offset = 0x%x, fb size = 0x%lx,\n",pSiSXvMC->fb_map.offset, pSiSXvMC->fb_map.size);
 #endif
 
   
@@ -580,7 +562,7 @@ Status XvMCCreateContext(Display *display, XvPortID port,
   /* Map AGP memory */
   if(drmMap(pSiSXvMC->fd, pSiSXvMC->agp_map.offset,
 	    pSiSXvMC->agp_map.size, &(pSiSXvMC->agp_map.address)) < 0) {
-		printf("[XvMC] Unable to map AGP at offset 0x%x and size 0x%x\n",
+		printf("[XvMC] Unable to map AGP at offset 0x%x and size 0x%lx\n",
 		   (unsigned int)pSiSXvMC->agp_map.offset,pSiSXvMC->agp_map.size);
 		_xvmc_destroy_context(display, context);
 		/*free(pSiSXvMC->dmabufs->list);*/
@@ -594,7 +576,7 @@ Status XvMCCreateContext(Display *display, XvPortID port,
   /* Map MMIO registers */
   if(drmMap(pSiSXvMC->fd, pSiSXvMC->mmio_map.offset,
 	    pSiSXvMC->mmio_map.size, &(pSiSXvMC->mmio_map.address))<0){
-		printf("[XvMC] Unable to map MMIO at offset 0x%x and size 0x%x\n",
+		printf("[XvMC] Unable to map MMIO at offset 0x%x and size 0x%lx\n",
 		   (unsigned int)pSiSXvMC->mmio_map.offset,pSiSXvMC->mmio_map.size);
 		_xvmc_destroy_context(display, context);
 		/*free(pSiSXvMC->dmabufs->list);*/
@@ -607,7 +589,7 @@ Status XvMCCreateContext(Display *display, XvPortID port,
   /* Map Frame Buffer */
   if(drmMap(pSiSXvMC->fd, pSiSXvMC->fb_map.offset,
 	    pSiSXvMC->fb_map.size, &(pSiSXvMC->fb_map.address))<0){
-		printf("[XvMC] Unable to map frame buffer at offset 0x%x and size 0x%x\n",
+		printf("[XvMC] Unable to map frame buffer at offset 0x%x and size 0x%lx\n",
 		   (unsigned int)pSiSXvMC->fb_map.offset,pSiSXvMC->fb_map.size);
 		_xvmc_destroy_context(display, context);
 		/*free(pSiSXvMC->dmabufs->list);*/
@@ -786,7 +768,7 @@ Status XvMCCreateSurface( Display *display, XvMCContext *context,
    */
    if(priv_count != sizeof(SiSXvMCCreateSurfaceRec)) {
       printf("[XvMC] _xvmc_create_surface() return incorrect data size.\n");
-      printf("Expected %d, got %d\n",sizeof(SiSXvMCCreateSurfaceRec), priv_count);
+      printf("Expected %lu, got %d\n",sizeof(SiSXvMCCreateSurfaceRec), priv_count);
       free(priv_data);
       free(pSiSSurface);
       return BadAlloc;
@@ -2399,7 +2381,7 @@ Status XvMCPutSurface(Display *display,XvMCSurface *surface,
 	
 	break;
    default:
-   	printf("[XvMC] %s: This image format (id: 0x%x) is not supported\n",
+   	printf("[XvMC] %s: This image format (id: 0x%lx) is not supported\n", __FUNCTION__ ,
 		surface->surface_id);
 	break;		
   }
@@ -2442,7 +2424,7 @@ Status XvMCPutSurface(Display *display,XvMCSurface *surface,
 	fmt = 0x0c;
 	break;
     default:
-   	printf("[XvMC] %s: This image format (id: 0x%x) is not supported\n",
+   	printf("[XvMC] %s: This image format (id: 0x%x) is not supported\n", __FUNCTION__ ,
 		surface->surface_type_id);
 	return BadValue;	
   }
@@ -2679,7 +2661,7 @@ Status XvMCPutSurface(Display *display,XvMCSurface *surface,
 #endif
 	break;
    default:
-   	printf("[XvMC] %s: This format of subpicture (id: 0x%x) is not support!\n",
+   	printf("[XvMC] %s: This format of subpicture (id: 0x%lx) is not support!\n",
 		__FUNCTION__, pSiSSubp->formatID);
 	return BadValue;
    }
