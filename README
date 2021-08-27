@@ -1,21 +1,47 @@
-// Build & Install
-sudo apt-get install autoconf automake xorg-dev xutils-dev mesa-common-dev libdrm-dev libtool 
-autoreconf -i
-./configure --prefix=/usr --disable-static
-make
-sudo make install
+Xorg SiS video driver for Linux
 
-// Config xorg.conf
-sudo nano /etc/X11/xorg.conf
+Source based on:
+https://github.com/gununu/xf86-video-sis-stable
 
-// merge following text and save(Ctrl+o Enter) exit(Ctrl+x)
-Section "Device"
-   Identifier "XXXX"
-   Driver "sisimedia"
-EndSection
+Tested to work on Xorg 1.19 with SiS 671 / 672 Mirage 3D
 
-Section "Screen"
-   Identifier "YYYY"
-   Device "XXXX"
-EndSection
+Known issues with Xorg versions without XAA support:
+- No hardware acceleration
+- No video acceleration aka XvMC
 
+How to download, build and install this driver:
+
+# Install required packages
+sudo apt-get install git make autoconf xorg-dev xutils-dev mesa-common-dev libdrm-dev libtool 
+
+# download
+git clone https://github.com/ace2nutzer/xf86-video-sis-stable.git
+cd xf86-video-sis-stable
+
+# build the driver
+./autogen.sh
+make -j2
+
+# install the driver
+sudo make -j2 install
+
+# install xorg.conf for LCD with 1280x800 pixels
+# XAA version
+sudo cp xorg.conf /etc/X11
+# or EXA version
+sudo cp xorg.conf.exa /etc/X11/xorg.conf
+
+# install XvMC config (for video hardware acceleration)
+sudo cp XvMCConfig /etc/X11
+# or on some older distros like lubuntu 12.04 (XAA)
+sudo cp XvMCConfig /usr/lib/xvmcconfig-standard
+
+# optional, but recommended:
+# use your console in text mode to improve scrolling (up to 3x faster!)
+sudo nano /etc/default/grub
+# uncomment "GRUB_TERMINAL=console" in order to disable graphical terminal (grub-pc only)
+# save with Strg+X  then Y then ENTER
+# update bootloader
+sudo update-grub
+
+# reboot and enjoy !
