@@ -18,6 +18,10 @@ sudo apt-get install git make autoconf xorg-dev xutils-dev mesa-common-dev libdr
 git clone https://github.com/ace2nutzer/xf86-video-sis-stable.git
 cd xf86-video-sis-stable
 
+#cleanup
+make -j2 clean
+make -j2 distclean
+
 # build the driver
 ./autogen.sh
 make -j2
@@ -26,14 +30,14 @@ make -j2
 sudo make -j2 install
 
 # install xorg.conf for LCD with 1280x800 pixels
-# XAA version
-sudo cp xorg.conf /etc/X11
-# or EXA version
+# EXA version
 sudo cp xorg.conf.exa /etc/X11/xorg.conf
+# or for some older Ubuntu (based) distros V.12.04 with XAA support
+sudo cp xorg.conf /etc/X11
 
 # install XvMC config (for video hardware acceleration)
 sudo cp XvMCConfig /etc/X11
-# or on some older distros like lubuntu 12.04 (XAA)
+# or for some older Ubuntu (based) distros V.12.04 with XAA support
 sudo cp XvMCConfig /usr/lib/xvmcconfig-standard
 
 # optional, but recommended:

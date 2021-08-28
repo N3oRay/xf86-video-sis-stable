@@ -68,25 +68,12 @@
 
 #ifdef HAVE_XAA_H
 #define SIS_USE_XAA		/* Include support for XAA */
-#define RENDER
-#define SISDRI
-#endif
-
-#ifdef SISVRAMQ
-#ifdef XORG_VERSION_CURRENT
-#if defined(SIS_HAVE_EXA) || (defined(XF86EXA) && (XF86EXA != 0))
-#if 1
+#else
 #define SIS_USE_EXA		/* Include support for EXA */
-#endif
-#endif
-#endif
 #endif
 
 // XXX: ??
 #undef XF86_HAS_SCRN_CONV
 
-#define SIS_USE_EXA
-
 /* End of configurable stuff --------------------------------- */
-
 

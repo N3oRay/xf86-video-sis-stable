@@ -141,8 +141,8 @@ int ChipDiffering(SiSXvMCContext* pSiSXvMC){
 int
 IsMPEGEngineIdle(SiSXvMCContext* pSiSXvMC){
 
-    CARD32 MpegStatus = inMMIO32(mmioAddress, REG_MPEG_STATUS);
-    CARD32 CmdBuffer = inMMIO32(mmioAddress, REG_MPEG_CMDBUFFG);
+    unsigned int MpegStatus = inMMIO32(mmioAddress, REG_MPEG_STATUS);
+    unsigned int CmdBuffer = inMMIO32(mmioAddress, REG_MPEG_CMDBUFFG);
 
    if(pSiSXvMC->ChipID == 671){
       outMMIO32(mmioAddress, REG_CLK_CMD, 0x2a1);
@@ -523,7 +523,7 @@ Status XvMCCreateContext(Display *display, XvPortID port,
   */
   if(priv_count != sizeof(SiSXvMCCreateContextRec)) {
     printf("[XvMC] _xvmc_create_context() returned incorrect data size!\n");
-    printf("\tExpected %lu, got %d\n", sizeof(SiSXvMCCreateContextRec), priv_count);
+    printf("\tExpected %u, got %d\n", (unsigned int)sizeof(SiSXvMCCreateContextRec), priv_count);
     _xvmc_destroy_context(display, context);
     free(pSiSXvMC);
     return BadAlloc;
@@ -768,7 +768,7 @@ Status XvMCCreateSurface( Display *display, XvMCContext *context,
    */
    if(priv_count != sizeof(SiSXvMCCreateSurfaceRec)) {
       printf("[XvMC] _xvmc_create_surface() return incorrect data size.\n");
-      printf("Expected %lu, got %d\n",sizeof(SiSXvMCCreateSurfaceRec), priv_count);
+      printf("Expected %u, got %d\n",(unsigned int)sizeof(SiSXvMCCreateSurfaceRec), priv_count);
       free(priv_data);
       free(pSiSSurface);
       return BadAlloc;
@@ -2846,9 +2846,9 @@ Status XvMCSyncSurface(Display *display,XvMCSurface *surface) {
    while(DecodeFinished & FrameBuffIndicator){
 
 #ifdef XVMCDEBUG
-      CARD32 mmiovalue;     
+      unsigned int mmiovalue;     
       FrameBufferStatus = inMMIO32(mmioAddress,REG_MPEG_STATUS);
-      printf("[XvMC] Decoder Status (0x8754): 0x%x, Buffer state (0x8718)= 0x%x\n",FrameBufferStatus, DecodeFinished);
+      printf("[XvMC] Decoder Status (0x8754): 0x%x, Buffer state (0x8718)= 0x%x\n",(uint32_t)FrameBufferStatus, (uint32_t)DecodeFinished);
       mmiovalue = inMMIO32(mmioAddress,REG_MPEG_PLP0);
       printf("[XvMC] PLP0 (0x8758): 0x%x, ", mmiovalue);
       mmiovalue = inMMIO32(mmioAddress,REG_MPEG_PLP1);

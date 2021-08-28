@@ -662,7 +662,6 @@ SiSAccelInit(ScreenPtr pScreen)
     pSiS->exa_scratch = NULL;
 #endif
 
-//#if 1
 //#ifdef SIS_USE_EXA
 //    if(!pSiS->NoAccel) {
 //       if(pSiS->useEXA && pScrn->bitsPerPixel == 24) {
@@ -676,7 +675,6 @@ SiSAccelInit(ScreenPtr pScreen)
 //	  }
 //       }
 //    }
-//#endif
 //#endif
 
     if(!pSiS->NoAccel) {
@@ -865,9 +863,9 @@ SiSAccelInit(ScreenPtr pScreen)
 	  pSiS->EXADriverPtr->UploadToScreen = SiSUploadToScreen;
 	  pSiS->EXADriverPtr->DownloadFromScreen = SiSDownloadFromScreen;
 
-#endif  /*end of Xorg>=7.0 EXA Setting*/       
+//#endif  /*end of Xorg>=7.0 EXA Setting*/       
        }
-//#endif /* EXA */
+#endif /* EXA */
 
     }  /* NoAccel */
 
@@ -964,10 +962,3 @@ SiSAccelInit(ScreenPtr pScreen)
 
     return TRUE;
 }
-
-
-
-
-
-
-

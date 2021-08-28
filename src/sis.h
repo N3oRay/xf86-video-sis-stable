@@ -35,10 +35,6 @@
 #ifndef _SIS_H_
 #define _SIS_H_
 
-// XXX!!!
-#define _swapl(x, n) swapl(x)
-#define _swaps(x, n) swaps(x)
-
 #define SISDRIVERVERSIONYEAR    6
 #define SISDRIVERVERSIONMONTH   10
 #define SISDRIVERVERSIONDAY     17
@@ -251,6 +247,15 @@
 #endif /* SISDRI */
 
 #include "sis_config.h"
+
+#ifdef SIS_USE_EXA
+// XXX!!!
+#define _swapl(x, n) swapl(x)
+#define _swaps(x, n) swaps(x)
+#else
+#define _swapl(x, n) swapl(x, n)
+#define _swaps(x, n) swaps(x, n)
+#endif
 
 #define UNLOCK_ALWAYS		/* Always unlock the registers (should be set!) */
 
