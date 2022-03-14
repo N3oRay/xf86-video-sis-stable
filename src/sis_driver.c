@@ -3049,8 +3049,8 @@ SiSPrintModes(ScrnInfoPtr pScrn, Bool printfreq)
     float hsync, refresh = 0.0;
     char *desc, *desc2, *prefix, *uprefix, *output;
 
-    xf86DrvMsg(pScrn->scrnIndex, pScrn->virtualFrom, "Virtual size is %dx%d (pitch %d)\n",
-	       pScrn->virtualX, pScrn->virtualY, pScrn->displayWidth);
+    xf86DrvMsg(pScrn->scrnIndex, X_INFO, "Virtual size is %dx%d (pitch %d)\n",
+               pScrn->virtualX, pScrn->virtualY, pScrn->displayWidth);
 
     if((p = pScrn->modes) == NULL) return;
 
@@ -9760,7 +9760,6 @@ SISScreenInit(SCREEN_INIT_ARGS_DECL)
 	     case 32: refreshArea = SISRefreshArea32; break;
 	  }
 #if XF86_VERSION_CURRENT >= XF86_VERSION_NUMERIC(4,3,0,0,0)
-	  xf86DisableRandR();
 	  xf86DrvMsg(pScrn->scrnIndex, X_INFO,
 		"Driver rotation enabled, disabling RandR\n");
 #endif
@@ -9772,7 +9771,6 @@ SISScreenInit(SCREEN_INIT_ARGS_DECL)
 		pScrn->PointerMoved = SISPointerMoved;
 		refreshArea = SISRefreshAreaReflect;
 #if XF86_VERSION_CURRENT >= XF86_VERSION_NUMERIC(4,3,0,0,0)
-		xf86DisableRandR();
 		xf86DrvMsg(pScrn->scrnIndex, X_INFO,
 			"Driver reflection enabled, disabling RandR\n");
 #endif
@@ -9891,7 +9889,6 @@ SISScreenInit(SCREEN_INIT_ARGS_DECL)
        pSiS->ShadowFB = FALSE;
 #if XF86_VERSION_CURRENT >= XF86_VERSION_NUMERIC(4,3,0,0,0)
        if(pSiS->CRT1XOffs || pSiS->CRT1YOffs || pSiS->CRT2XOffs || pSiS->CRT2YOffs) {
-	  xf86DisableRandR();
 	  xf86DrvMsg(pScrn->scrnIndex, X_INFO,
 		"MergedFB: CRT2Position offset used, disabling RandR\n");
        }

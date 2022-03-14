@@ -869,16 +869,12 @@ static Bool CheckOSforSSE(ScrnInfoPtr pScrn)
     xf86DrvMsg(pScrn->scrnIndex, X_INFO, "Checking OS SSE support\n");
 #endif
 
-    xf86InterceptSigIll(&sigill_handler);
-
    	 if(setjmp(sigill_return) ) {
     	   signo = 4;
    	 } else {
      	  __asm__ __volatile__ (" xorps %xmm0, %xmm0\n");
      	  /* __asm__ __volatile__ (" .byte 0xff\n"); */  /* For test */
     }
-
-    xf86InterceptSigIll(NULL);
 
 #ifdef SISDGBMC
     xf86DrvMsg(pScrn->scrnIndex, X_INFO, "OS SSE support signal %d\n", signo);
