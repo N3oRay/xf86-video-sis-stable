@@ -1,0 +1,10 @@
+# clean source tree
+./clean
+
+# compile driver
+./build
+
+# install driver
+./install
+
+# For more details check the README file.
