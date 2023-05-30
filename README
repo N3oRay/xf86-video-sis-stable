@@ -4,7 +4,7 @@ Source based on:
 https://github.com/gununu/xf86-video-sis-stable
 
 Tested to work on Xorg 1.19 with SiS 671 / 672 Mirage 3D
-Tested to work with [SiS] 	65x/M650/740 
+Tested to work on Xorg 1.20.11 with [SiS] 	65x/M650/740 
 
 Known issues with Xorg versions without XAA support:
 - No hardware acceleration
