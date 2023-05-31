@@ -1,9 +1,17 @@
 Xorg SiS video driver for Linux
 
+SIS: driver for SiS chipsets: SIS5597/5598, SIS530/620,
+        SIS6326/AGP/DVD, SIS300/305, SIS630/730, SIS540, SIS315, SIS315H,
+        SIS315PRO/E, SIS550, SIS650/M650/651/740,
+        SIS[M]661[F|M]X/[M]741[GX]/[M]760[GX]/[M]761[GX]/662, SIS330(Xabre),
+        SIS340, [M]670/[M]770[GX], [M]671/[M]771[GX]
+-------------------------------------------------------------------------------
+
 Source based on:
 https://github.com/gununu/xf86-video-sis-stable
 
 Tested to work on Xorg 1.19 with SiS 671 / 672 Mirage 3D
+Tested to work on Xorg 1.20.11 with [SiS] 	65x/M650/740 
 
 Known issues with Xorg versions without XAA support:
 - No hardware acceleration
