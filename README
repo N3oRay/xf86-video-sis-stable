@@ -10,8 +10,10 @@ SIS: driver for SiS chipsets: SIS5597/5598, SIS530/620,
 Source based on:
 https://github.com/gununu/xf86-video-sis-stable
 
-Tested to work on Xorg 1.19 with SiS 671 / 672 Mirage 3D
-Tested to work on Xorg 1.20.11 with [SiS] 	65x/M650/740 
+Tested to work on Xorg 1.20
+with [SiS]:
+- 671 / 672 Mirage 3D
+- 65x/M650/740
 
 Known issues with Xorg versions without XAA support:
 - No hardware acceleration
@@ -26,7 +28,7 @@ sudo apt-get install git make autoconf xorg-dev xutils-dev mesa-common-dev libdr
 git clone https://github.com/ace2nutzer/xf86-video-sis-stable.git
 cd xf86-video-sis-stable
 
-#cleanup
+# cleanup
 make -j2 clean
 make -j2 distclean
 
