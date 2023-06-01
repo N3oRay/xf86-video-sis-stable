@@ -103,6 +103,7 @@ If you started sisfb without the mem argument, sisfb will reserve
 Option   "DRI"   "true"
 This option allows enabling or disabling DRI. By default, DRI is on.
 
-Option   "AGPSize"   "8"
+Option   "AGPSize"   "64"
 This option allows selecting the amount of AGP memory to be used for DRI.
-The amount is to be specified in megabyte, the default is 8.
+The amount is to be specified in megabyte, the default is 8. If you have an AGP card values: 8,16,32,64, or 128 MB
+
