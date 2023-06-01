@@ -40,7 +40,7 @@ make -j2
 sudo make -j2 install
 
 # install xorg.conf for LCD with 1280x800 pixels
-# EXA version
+# EXA version (*)
 sudo cp xorg.conf.exa /etc/X11/xorg.conf
 # or for some older Ubuntu (based) distros V.12.04 with XAA support
 sudo cp xorg.conf /etc/X11
@@ -59,3 +59,22 @@ sudo nano /etc/default/grub
 sudo update-grub
 
 # reboot and enjoy !
+
+-------------------------------------------------------------------------------
+# (*) NOTICE: EXA version
+# Option "ShadowFB"
+# This option enables the shadow raster buffer layer. By default it is disabled.
+# If this option is enabled, the driver will cause the CPU to do each drawing operation first into a shadow frame buffer 
+# in system virtual memory and then copy the result into video memory. 
+# If this option is not active, the CPU will draw directly into video memory. 
+# Enabling this option is beneficial for those systems where reading from video memory is, on average, 
+# slower than the corresponding read/modify/write operation in system virtual memory. 
+# This is normally the case for PCI or AGP adapters, and, so, this option is enabled by default unless acceleration is enabled.
+
+# EXA works both with and without DRI. Depending on the actual hardware, things may be slower or faster with DRI enabled. 
+# As a rule of thumb, rendering glyphs and small things are faster without DRI, 
+# but if EXA feels like copying a big area from screen to memory, the X server may hang for a second or so while this is happening, 
+# if DRI is not enabled.
+
+# YOU SHOULD REALLY HAVE 64 MB VIDEO MEMORY SET IN BIOS WHEN USING A COMPOSITE MANAGER!!! Consider yourself advised.
+# Some applications, like later versions of konqueror seem dead slow with EXA and composite acceleration. 
