@@ -78,3 +78,31 @@ sudo update-grub
 
 # YOU SHOULD REALLY HAVE 64 MB VIDEO MEMORY SET IN BIOS WHEN USING A COMPOSITE MANAGER!!! Consider yourself advised.
 # Some applications, like later versions of konqueror seem dead slow with EXA and composite acceleration. 
+-------------------------------------------------------------------------------
+Option   "FastVram"   "true"
+Enable or disable FastVram mode.  Enabling this sets the video RAM timing
+to one cycle per read operation instead of two cycles. Disabling this will
+set two cycles for read and write operations. Leaving this option out uses
+the default, which varies depending on the chipset.
+
+
+Option   "NoHostBus"   "true"
+(SiS5597/5598 only). Disable CPU-to-VGA host bus support. This
+speeds up CPU to video RAM transfers. Default: Host bus is enabled.
+
+Option   "MaxXFBMem"   "12288"
+
+exists. This option must be set to the same value as given to sisfb through
+its "mem" parameter, ie the amount of memory to use for X in kilobytes.
+
+If you started sisfb without the mem argument, sisfb will reserve
+12288KB if more than 16MB of total video RAM is available,
+8192KB if between 12 and 16MB of video RAM is available,
+4096KB in all other cases.
+
+Option   "DRI"   "true"
+This option allows enabling or disabling DRI. By default, DRI is on.
+
+Option   "AGPSize"   "8"
+This option allows selecting the amount of AGP memory to be used for DRI.
+The amount is to be specified in megabyte, the default is 8.
